@@ -3,7 +3,7 @@
 # https://blowfish.page/docs/getting-started/
 
 theme = "blowfish" # UNCOMMENT THIS LINE
-baseURL = "https://www.seekinthevortex.cn"
+baseURL = "https://zhugeshi.github.io/Votex-s-World/"
 defaultContentLanguage = "zh-cn"
 
 hasCJKLanguage = true
