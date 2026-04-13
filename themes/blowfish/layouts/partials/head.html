@@ -94,7 +94,7 @@
     <meta name="fediverse:creator" content="{{ . }}">
   {{ end }}
 
-  {{ $alg := .Site.Params.fingerprintAlgorithm | default "sha512" }}
+  {{ $alg := .Site.Params.fingerprintAlgorithm }}
 
   {{/* CSS */}}
   {{ $cssResources := slice }}
@@ -108,36 +108,51 @@
   {{ if not .Site.Params.disableImageZoom | default true }}
     {{ $cssResources = $cssResources | append (resources.Get "lib/zoom/style.css") }}
   {{ end }}
-  {{ $bundleCSS := $cssResources | resources.Concat "css/main.bundle.css" | resources.Minify | resources.Fingerprint $alg }}
+  {{ $bundleCSS := $cssResources | resources.Concat "css/main.bundle.css" | resources.Minify }}
+  {{ if $alg }}
+    {{ $bundleCSS = $bundleCSS | resources.Fingerprint $alg }}
+  {{ end }}
   <link
     type="text/css"
     rel="stylesheet"
     href="{{ $bundleCSS.RelPermalink }}"
-    integrity="{{ $bundleCSS.Data.Integrity }}">
+    {{ with $bundleCSS.Data.Integrity }}integrity="{{ . }}"{{ end }}>
 
   {{/* JS loaded immediately */}}
-  {{ $jsAppearance := resources.Get "js/appearance.js" | resources.ExecuteAsTemplate "js/appearance.js" . | resources.Minify | resources.Fingerprint $alg }}
+  {{ $jsAppearance := resources.Get "js/appearance.js" | resources.ExecuteAsTemplate "js/appearance.js" . | resources.Minify }}
+  {{ if $alg }}
+    {{ $jsAppearance = $jsAppearance | resources.Fingerprint $alg }}
+  {{ end }}
   <script
     type="text/javascript"
     src="{{ $jsAppearance.RelPermalink }}"
-    integrity="{{ $jsAppearance.Data.Integrity }}"></script>
+    {{ with $jsAppearance.Data.Integrity }}integrity="{{ . }}"{{ end }}></script>
   {{ $enableA11y := .Site.Params.enableA11y | default false }}
   {{ if $enableA11y }}
-    {{ $jsA11y := resources.Get "js/a11y.js" | resources.Minify | resources.Fingerprint $alg }}
-    <script src="{{ $jsA11y.RelPermalink }}" integrity="{{ $jsA11y.Data.Integrity }}"></script>
+    {{ $jsA11y := resources.Get "js/a11y.js" | resources.Minify }}
+    {{ if $alg }}
+      {{ $jsA11y = $jsA11y | resources.Fingerprint $alg }}
+    {{ end }}
+    <script src="{{ $jsA11y.RelPermalink }}" {{ with $jsA11y.Data.Integrity }}integrity="{{ . }}"{{ end }}></script>
   {{ end }}
   {{ $showZenMode := .Params.showZenMode | default (.Site.Params.article.showZenMode | default false) }}
   {{ $shouldIncludeZenMode := or $enableA11y $showZenMode }}
   {{ if and .IsPage $shouldIncludeZenMode }}
-    {{ $jsZenMode := resources.Get "js/zen-mode.js" | resources.Minify | resources.Fingerprint $alg }}
+    {{ $jsZenMode := resources.Get "js/zen-mode.js" | resources.Minify }}
+    {{ if $alg }}
+      {{ $jsZenMode = $jsZenMode | resources.Fingerprint $alg }}
+    {{ end }}
     <script
       type="text/javascript"
       src="{{ $jsZenMode.RelPermalink }}"
-      integrity="{{ $jsZenMode.Data.Integrity }}"></script>
+      {{ with $jsZenMode.Data.Integrity }}integrity="{{ . }}"{{ end }}></script>
   {{ end }}
   {{ if not .Site.Params.disableImageZoom | default true }}
-    {{ $zoomJS := resources.Get "lib/zoom/zoom.min.umd.js" | resources.Fingerprint $alg }}
-    <script src="{{ $zoomJS.RelPermalink }}" integrity="{{ $zoomJS.Data.Integrity }}"></script>
+    {{ $zoomJS := resources.Get "lib/zoom/zoom.min.umd.js" }}
+    {{ if $alg }}
+      {{ $zoomJS = $zoomJS | resources.Fingerprint $alg }}
+    {{ end }}
+    <script src="{{ $zoomJS.RelPermalink }}" {{ with $zoomJS.Data.Integrity }}integrity="{{ . }}"{{ end }}></script>
   {{ end }}
 
   {{/* JS deferred */}}
@@ -158,13 +173,16 @@
   {{ $jsResources = $jsResources | append (resources.Get "js/print-support.js") }}
   {{ $jsResources = $jsResources | append (resources.Get "js/email.js") }}
   {{ if $jsResources }}
-    {{ $bundleJS := $jsResources | resources.Concat "js/main.bundle.js" | resources.Minify | resources.Fingerprint $alg }}
+    {{ $bundleJS := $jsResources | resources.Concat "js/main.bundle.js" | resources.Minify }}
+    {{ if $alg }}
+      {{ $bundleJS = $bundleJS | resources.Fingerprint $alg }}
+    {{ end }}
     <script
       defer
       type="text/javascript"
       id="script-bundle"
       src="{{ $bundleJS.RelPermalink }}"
-      integrity="{{ $bundleJS.Data.Integrity }}"
+      {{ with $bundleJS.Data.Integrity }}integrity="{{ . }}"{{ end }}
       data-copy="{{ i18n "code.copy" }}"
       data-copied="{{ i18n "code.copied" }}"></script>
   {{ end }}
