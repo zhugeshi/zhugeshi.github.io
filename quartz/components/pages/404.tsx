@@ -37,10 +37,12 @@ const NotFound: QuartzComponent = ({ cfg, ctx }: QuartzComponentProps) => {
                 pathname = pathname.slice(0, -6);
               }
               var lowered = pathname.toLowerCase();
-              if (lowered !== pathname && index[lowered] != null) {
+              if (index[lowered] != null) {
                 var prefix = hasBasePrefix ? basePath : "";
-                var target = prefix + (prefix.endsWith("/") ? "" : "/") + lowered;
-                window.location.replace(target);
+                var target = prefix + (prefix.endsWith("/") ? "" : "/") + lowered + ".html";
+                if (window.location.pathname !== target) {
+                  window.location.replace(target);
+                }
               }
             });
           }
