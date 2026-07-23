@@ -7,7 +7,7 @@ configuration:
   analytics:
     provider: plausible
   locale: en-US
-  baseUrl: zhugeshi.github.io/zhugeshi-zhugeshi.github.io-quartz
+  baseUrl: zhugeshi.github.io
   ignorePatterns:
     - Private
     - templates
