@@ -1,0 +1,73 @@
+@use "./variables.scss" as *;
+
+// put your custom CSS here!
+
+.breadcrumb-container {
+  margin-bottom: 1.5rem;
+}
+
+:not(pre) > code {
+  font-family: var(--bodyFont);
+  font-style: italic;
+}
+
+blockquote {
+  padding-left: 1.5rem;
+}
+
+.toc:has(> .toc-header.collapsed) > .toc-content {
+  display: none;
+}
+
+.toc:has(> .toc-header.collapsed) {
+  flex: 0 0 auto;
+  min-height: 2rem;
+  overflow: visible;
+}
+
+.toc-content .depth-1 {
+  padding-left: 1.25rem;
+}
+
+.toc-content .depth-2 {
+  padding-left: 2.5rem;
+}
+
+.toc-content .depth-3 {
+  padding-left: 3.75rem;
+}
+
+.toc-content .depth-4 {
+  padding-left: 5rem;
+}
+
+.toc-content .depth-5 {
+  padding-left: 6.25rem;
+}
+
+.toc-content .depth-6 {
+  padding-left: 7.5rem;
+}
+
+@media all and (min-width: 801px) {
+  .explorer.collapsed {
+    flex: 0 0 auto;
+    min-height: 2rem;
+    overflow: visible;
+  }
+
+  .explorer.collapsed > .explorer-content {
+    display: none;
+  }
+}
+
+pre code {
+  line-height: 1.35;
+}
+
+pre,
+pre code {
+  font-family: "Maple Mono NF CN", "JetBrains Mono", monospace;
+  font-weight: 350;
+  font-synthesis: none;
+}
