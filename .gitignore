@@ -1,0 +1,16 @@
+.DS_Store
+node_modules
+/public
+prof
+tsconfig.tsbuildinfo
+.obsidian/
+.obsidian.vimrc
+.vs/
+周记/
+.quartz-cache
+Private/
+.replit
+replit.nix
+.quartz/
+quartz/cli/tui/dist/
+cloudflare_publish.nu
