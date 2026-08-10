@@ -1,5 +1,3 @@
-更新中...
-
 # Pluto Chat
 
 ## 程序分析
@@ -69,7 +67,7 @@ void __fastcall __noreturn main(int a1, char **a2, char **a3)
 
 先分析第一个CD7函数
 
-![image.png](https://cloud-map-bed-1351541725.cos.ap-nanjing.myqcloud.com/pic/20251003153551.png)
+![image.png|825](https://cloud-map-bed-1351541725.cos.ap-nanjing.myqcloud.com/pic/20251003153551.png)
 
 可以发现这里启动了一个线程,我们继续跟踪观察,可以发现这个线程一致再循环启动一个函数
 
@@ -84,7 +82,7 @@ void __fastcall __noreturn start_routine(unsigned int *a1)
 
 继续跟踪,我们发现main_func中一直再调用read函数通过fd读入服务端发回的信息,如果校验通过,就会输出Login Successful的验证信息.
 
-![image.png](https://cloud-map-bed-1351541725.cos.ap-nanjing.myqcloud.com/pic/20251003153931.png)
+![image.png|700](https://cloud-map-bed-1351541725.cos.ap-nanjing.myqcloud.com/pic/20251003153931.png)
 
 接下来我们来分析一下校验的流程,首先分析一下init_sbox函数
 发现在return之前都是对key进行混淆,于是我们继续跟踪return的函数
@@ -315,7 +313,6 @@ ssize_t __fastcall sub_555555555751(int fd, char *s, char *s1)
 
 所以这个程序大致的流程就是
 
-> [!大致流程]
 > 客户端加密 <-> 发送 <-> 服务端解密 
 
 我们再仔细观察这个两个函数,我们很容易发现在解码消息的时候,我们的函数会取出编码在消息开头的key和len再进行解码,又由于RC4是对称加密,所以我们只需要将一样的数据发送给服务就可以得到解密之后的文本了.
