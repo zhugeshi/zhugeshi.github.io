@@ -81,7 +81,7 @@
     "@quartz-community/spacer": "^0.1.0",
     "@quartz-community/stacked-pages": "^0.1.0",
     "@quartz-community/syntax-highlighting": "^0.1.0",
-    "@quartz-community/table-of-contents": "^0.1.0",
+    "@quartz-community/table-of-contents": "file:vendor/table-of-contents",
     "@quartz-community/tag-list": "^0.1.0",
     "@quartz-community/tag-page": "^0.1.0",
     "@quartz-community/unlisted-pages": "^0.1.0",

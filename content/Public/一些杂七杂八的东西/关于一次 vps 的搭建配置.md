@@ -11,8 +11,7 @@
 * 代理端口：TCP + UDP 443
 * 分流模式：Rule
 * 国内流量：DIRECT
-* 指定国外服务：通过美国 VPS
-* WireGuard：保留配置，但暂时关闭
+* 指定国外服务：通过 VPS
 
 最终网络结构大致如下：
 
@@ -39,33 +38,35 @@
 
 这种方式最大的优点，是可以利用 Clash/Mihomo 的规则系统，只让真正需要代理的流量经过 VPS，从而减少 VPS 流量消耗（其实我也不是很懂）
 
+# 选择你心仪的对象
+
+其实我根本不懂什么参数，我只会问问 ai 大人，让他帮我全网检索相关信息。
+
+ai 大人在深思熟虑之后给我提供了几个选项，然后就看中了现在的这款，每个月只需要 20-30 块钱，性能比较垃圾但好在够用。
+
+付款部署完之后我们应该干啥呢？当然是继续询问 ai 大人... chat 给我列出了一系列的步骤，接下来试试跟着它干吧。
+
 # 配置过程
 
-首先进行系统更新
+在首次通过平台提供的密码登录后，首先进行系统更新
 
 ```bash
 apt update
 apt upgrade -y
 ```
 
-为我的 vps 搭配 ssh 密钥登录。
-刚开始查询的时候发现当前 vps 禁止 ssh 密钥对，编辑文件打开即可
+为了方便以后连接服务器，选择配置密钥对进行登录。
+
+刚开始查询的时候发现当前 vps 禁止 ssh 密钥对，修改一下配置为 yes 即可
 
 ```shell
 root@VM-qGcZ14MraO:~/.ssh# sshd -T | grep -E 'pubkeyauthentication|authorizedkeysfile|permitrootlogin'
 permitrootlogin yes
 pubkeyauthentication no
 authorizedkeysfile .ssh/authorized_keys .ssh/authorized_keys2
-
-# => after
-
-root@VM-qGcZ14MraO:~/.ssh# sshd -T | grep -E 'pubkeyauthentication|authorizedkeysfile|permitrootlogin'
-permitrootlogin yes
-pubkeyauthentication yes
-authorizedkeysfile .ssh/authorized_keys .ssh/authorized_keys2
 ```
 
-在主机上生成密钥对
+接下来就可以在主机上生成密钥对了
 
 ```shell
 # -t 使用的算法
@@ -103,6 +104,11 @@ Host myvps
 ```
 
 # 安装 sing-box
+
+接下来我们需要一个东西转发我们的流量，这里选择使用了 sing-box 监听转发我们主机发来的流量。
+- 在 VPS 上监听端口，比如 443
+- 接收 Clash Verge 发来的加密代理流量
+- 解密后再由 VPS 访问目标网站，并把结果返回给客户端
 
 安装 sing-box，并检查 443 是否已经被占用
 
@@ -156,31 +162,11 @@ vim /etc/sing-box/config.json
 chmod 600 /etc/sing-box/config.json
 ```
 
-设置开机启动：
+- 设置开机启动：`systemctl enable sing-box`
+- 启动或重启：`systemctl restart sing-box`
+- 查看状态：`systemctl status sing-box --no-pager -l`
 
-```bash
-systemctl enable sing-box
-```
-
-启动或重启：
-
-```bash
-systemctl restart sing-box
-```
-
-查看状态：
-
-```bash
-systemctl status sing-box --no-pager -l
-```
-
-正常结果类似：
-
-```text
-Active: active (running)
-```
-
-日志：
+日志类似这个样子：
 
 ```text
 INFO inbound/shadowsocks[ss-in]:
@@ -192,58 +178,24 @@ udp server started at [::]:443
 INFO sing-box started
 ```
 
-说明 udp 和 tcp 全部成功启动。进一步确认：
+到这里，VPS 服务端已经配置完成。
 
-```bash
-ss -lntup | grep ':443'
+# 配置 Clash（基于 Mihomo 内核）
 
-# output =>
-# udp UNCONN ... *:443 ... sing-box
-# tcp LISTEN ... *:443 ... sing-box
-```
+我们大概需要这些东西：
 
-到这里，VPS 服务端已经配置完成。接下来自己配置一些文件接入第三方客户端就可以了，这里就不多说了。
+- 监听一个端口
+- 允许局域网访问
+- 按照规则分流
 
-# 服务器流量监控
+- 使用 ipv4 
+- 指定服务地址、端口、协议、密钥用于连接
+- 可能需要 TUN 模式
 
-查看本月：
+有了这些需求，让 ai 大人再帮我们搓一个配置应该不是什么难事吧（
 
-```bash
-vnstat -m -i eth0
-```
+# 还可以干些啥？
 
-查看每天：
+我的博客已经通过 Hugo 框架通过薅羊毛的方式部署在 cloudfare page 上面了，每个月能免费构建好几千次呢，远远超出了我的使用需求了。不过以后如果有需求的话把博客迁移到 vps 上也不是不可以。但是也没那个必要似乎。
 
-```bash
-vnstat -d -i eth0
-```
-
-查看每小时：
-
-```bash
-vnstat -h -i eth0
-```
-
-实时：
-
-```bash
-vnstat -l -i eth0
-```
-
-输出中：
-
-```text
-rx
-```
-
-表示 VPS 收到的流量。
-
-```text
-tx
-```
-
-表示 VPS 发出的流量。
-
-```text
-total
-```
+或者留着以后拿来当测试机也不错，总之就先这样就好。

@@ -1,0 +1,38 @@
+TOC HIGHLIGHT FIX VERIFICATION
+
+Changed branch/field:
+- Old branch: entry.boundingClientRect.y < entry.rootBounds.height
+- New field/branch: entry.isIntersecting
+- Restored behavior: rollback restores the old boundingClientRect/rootBounds branch and SHA-256.
+
+Artifacts:
+- MODIFIED_FILE: D:\blog\quartz\vendor\table-of-contents\dist\components\index.js
+- DIFF_FILE: D:\blog\quartz\verification\toc-highlight\DIFF_FILE.diff
+- VERIFICATION.txt: D:\blog\quartz\verification\toc-highlight\VERIFICATION.txt
+- executable ROLLBACK.sh: D:\blog\quartz\verification\toc-highlight\ROLLBACK.sh
+
+BASELINE
+Command: npm test
+Input: repository before TOC modification
+Literal result: tests 109; pass 109; fail 0; duration_ms 441.7612
+Exit status: 0
+Original SHA-256: C77788612D0848B24AA581112F85F2B815BB13AAB9F19A1A89A7AA8D5AA21C00
+
+MODIFIED
+Command: npm test
+Input: vendored TOC component using entry.isIntersecting plus toc-highlight.test.ts
+Literal result: tests 110; pass 110; fail 0; duration_ms 404.0025
+Exit status: 0
+Command: npx quartz build
+Input: 36 Markdown files from content
+Literal output/result: Emitted 103 files to `public` in 613ms; Done processing 36 files in 5s
+Exit status: 0
+Generated bundle result: GENERATED_MATCH_COUNT=1; public\static\scripts\script-4-5dc4ef35.js
+Modified SHA-256: C9EF16955F85968243DF15BD181127F280CAEB38965F5FFFF82F7A581265F3E6
+
+ROLLBACK
+Command: $env:TOC_ROLLBACK_ARTIFACT_DIR=(Resolve-Path 'verification\toc-highlight').Path; Get-Content 'verification\toc-highlight\ROLLBACK.sh' -Raw | node --input-type=module - verification/toc-highlight/ROLLBACK_TEST_COPY.js
+Input: a second copy of MODIFIED_FILE at verification\toc-highlight\ROLLBACK_TEST_COPY.js
+Literal output/result: ROLLBACK_OK target=D:\blog\quartz\verification\toc-highlight\ROLLBACK_TEST_COPY.js sha256=C77788612D0848B24AA581112F85F2B815BB13AAB9F19A1A89A7AA8D5AA21C00 restored_branch=boundingClientRect.y<rootBounds.height
+Exit status: 0
+Restored behavior/status: RESTORED_BEHAVIOR=True; MODIFIED_FILE_STILL_CHANGED=True
