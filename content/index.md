@@ -53,5 +53,6 @@ title: 这里是我的博客兼知识库！
 
 <section class="friend-links">
   <p>想交换友链？欢迎通过 <a href="mailto:1193224886@qq.com">Email</a> 联系我。</p>
+  <p>通过 <a href="https://www.seekinthevortex.cn/index.xml"> RSS </a> 查看更新。</p>
 </section>
 
