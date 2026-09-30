@@ -20,7 +20,7 @@ configuration:
     typography:
       header: Schibsted Grotesk
       body: Source Sans Pro
-      code: Maple Mono NF CN
+      code: Source Sans Pro
     colors:
       lightMode:
         light: "#faf8f8"
@@ -263,7 +263,7 @@ plugins:
         - aliases
       excludedProperties: []
       hidePropertiesView: false
-      delimiters: ---
+      delimiters: '---'
       language: yaml
     order: 5
     layout:
@@ -284,6 +284,19 @@ plugins:
       darkMode: auto
       exportPadding: 20
     order: 50
+  - source: "@local/quartz-image-zoom"
+    enabled: true
+    options: {}
+    order: 50
+  - source: "@local/recent-git-activity"
+    enabled: true
+    options:
+      title: 最近修改
+      limit: 5
+    layout:
+      position: right
+      priority: 60
+      condition: index
 layout:
   groups:
     toolbar:

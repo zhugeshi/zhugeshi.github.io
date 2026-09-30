@@ -2,6 +2,33 @@
 
 // put your custom CSS here!
 
+// Keep the Reader Mode page background and both sidebars in one hover state.
+@media all and (min-width: 1200px) {
+  :root[reader-mode="on"] body[data-slug] #quartz-root.page {
+    background-color: transparent;
+    background-image: none;
+    transition: background-color 0.2s ease;
+  }
+
+  :root[reader-mode="on"] body[data-slug] #quartz-root.page > #quartz-body > .sidebar {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  :root[reader-mode="on"] body[data-slug] #quartz-root.page:has(> #quartz-body > .sidebar:hover) {
+    background-color: var(--tab-container-background);
+    background-image: none;
+  }
+
+  :root[reader-mode="on"]
+    body[data-slug]
+    #quartz-root.page:has(> #quartz-body > .sidebar:hover)
+    > #quartz-body
+    > .sidebar {
+    opacity: 1;
+  }
+}
+
 .breadcrumb-container {
   margin-bottom: 1.5rem;
 }
