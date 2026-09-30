@@ -1,0 +1,49 @@
+{
+  "name": "@local/recent-git-activity",
+  "version": "1.0.0",
+  "description": "Display recent Git commits in a Quartz sidebar.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.js",
+    "./components": "./src/index.js",
+    "./package.json": "./package.json"
+  },
+  "main": "./src/index.js",
+  "sideEffects": false,
+  "peerDependencies": {
+    "preact": "^10.0.0"
+  },
+  "quartz": {
+    "name": "recent-git-activity",
+    "displayName": "Recent Git Activity",
+    "category": "component",
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 50,
+    "defaultEnabled": true,
+    "defaultOptions": {
+      "title": "最近修改",
+      "limit": 5
+    },
+    "components": {
+      "RecentGitActivity": {
+        "displayName": "Recent Git Activity",
+        "defaultPosition": "left",
+        "defaultPriority": 60
+      }
+    },
+    "optionSchema": {
+      "title": {
+        "type": "string"
+      },
+      "limit": {
+        "type": "number"
+      }
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

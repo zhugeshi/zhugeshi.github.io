@@ -1,0 +1,50 @@
+{
+  "name": "@local/quartz-image-zoom",
+  "version": "1.0.0",
+  "description": "Click any image on your Quartz site to open it full-size.",
+  "type": "module",
+  "license": "MIT",
+  "author": "vazome",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vazome/quartz-image-zoom"
+  },
+  "keywords": [
+    "quartz",
+    "quartz-plugin",
+    "zoom",
+    "images",
+    "lightbox",
+    "rehype",
+    "hast"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": false,
+  "quartz": {
+    "name": "image-zoom",
+    "displayName": "Image Zoom",
+    "category": "transformer",
+    "version": "1.0.0",
+    "quartzVersion": ">=5.0.0",
+    "dependencies": [],
+    "defaultOrder": 50,
+    "defaultEnabled": true,
+    "defaultOptions": {}
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
